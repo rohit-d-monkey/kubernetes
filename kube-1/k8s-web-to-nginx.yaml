@@ -1,9 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: k8s-web-to-nginx
+spec:
+  type: LoadBalancer
+  selector:
+    app: k8s-web-to-nginx
+  ports:
+  - port: 3333
+    targetPort: 3000
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: k8s-web-hello
 spec:
-  replicas: 4
+  replicas: 3
   selector:
     matchLabels:
       app: k8s-web-hello
@@ -14,7 +26,7 @@ spec:
     spec:
       containers:
       - name: k8s-web-hello
-        image: bstashchuk/k8s-web-hello
+        image: bstashchuk/k8s-web-to-nginx
         resources:
           limits:
             memory: "128Mi"
